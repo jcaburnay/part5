@@ -3,6 +3,17 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
+const Notification = ({ notifType, message }) => {
+  if(message === null) {
+    return null
+  }
+  return (
+    <div className={notifType}>
+      {message}
+    </div>
+  )
+}
+
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('') 
@@ -11,6 +22,8 @@ const App = () => {
   const [blogTitle, setBlogTitle] = useState('')
   const [blogAuthor, setBlogAuthor] = useState('')
   const [blogUrl, setBlogUrl] = useState('')
+  const [successMessage, setSuccessMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
     const loggedInUserJSON = window.localStorage.getItem('loggedInUser')
@@ -43,6 +56,10 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch(error) {
+      setErrorMessage('Invalid username or password');
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000);
       console.log(error)
     }
   }
@@ -65,6 +82,10 @@ const App = () => {
       setBlogTitle('')
       setBlogAuthor('')
       setBlogUrl('')
+      setSuccessMessage(`new blog added: ${blog.title} by ${blog.author}`)
+      setTimeout(() => {
+        setSuccessMessage(null)
+      }, 5000)
       setBlogs(blogs.concat(blog))
     } catch(error) {
       console.log(error)
@@ -75,6 +96,7 @@ const App = () => {
     return (
       <div>
         <h2>Log in to application</h2>
+        <Notification message={errorMessage} notifType="error" />
         <form onSubmit={handleLogin}>
           <div>
             username
@@ -111,6 +133,7 @@ const App = () => {
         <h4>
           Create new blog
         </h4>
+        <Notification message={successMessage} notifType="success" />
         <form onSubmit={handleCreate}>
           <div>
             title:
