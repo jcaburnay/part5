@@ -2,17 +2,9 @@ import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
-
-const Notification = ({ notifType, message }) => {
-  if(message === null) {
-    return null
-  }
-  return (
-    <div className={notifType}>
-      {message}
-    </div>
-  )
-}
+import BlogForm from './components/BlogForm'
+import Togglable from './components/Togglable'
+import Notification from './components/Notification'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -129,42 +121,18 @@ const App = () => {
         <h4>{user.name} logged in</h4>
         <button onClick={handleLogout}>logout</button>
       </div>
-      <div>
-        <h4>
-          Create new blog
-        </h4>
-        <Notification message={successMessage} notifType="success" />
-        <form onSubmit={handleCreate}>
-          <div>
-            title:
-            <input
-              type="text"
-              value={blogTitle}
-              name="title"
-              onChange={({ target }) => setBlogTitle(target.value)}
-            />
-          </div>
-          <div>
-            author:
-            <input
-              type="text"
-              value={blogAuthor}
-              name="author"
-              onChange={({ target }) => setBlogAuthor(target.value)}
-            />
-          </div>
-          <div>
-            url:
-            <input
-              type="text"
-              value={blogUrl}
-              name="url"
-              onChange={({ target }) => setBlogUrl(target.value)}
-            />
-          </div>
-          <button type="submit">Create</button>
-        </form>
-      </div>
+      <Togglable buttonLabel='new blog'>
+        <BlogForm 
+          successMessage={successMessage}
+          blogTitle={blogTitle}
+          blogAuthor={blogAuthor}
+          blogUrl={blogUrl}
+          handleCreate={handleCreate}
+          handleTitleChange={({ target }) => setBlogTitle(target.value)}
+          handleAuthorChange={({ target }) => setBlogAuthor(target.value)}
+          handleUrlChange={({ target }) => setBlogUrl(target.value)}
+        />
+      </Togglable>
       {
         blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />)
