@@ -100,6 +100,15 @@ const App = () => {
     setBlogs(newBlogs)
   }
 
+  const handleClickRemove = async (blogToRemove) => {
+    if (!window.confirm("Do you really want to remove?")) {
+      return;
+    }
+    await blogService.deleteBlog(blogToRemove)
+    const updatedBlogs = blogs.filter(blog => blogToRemove.id !== blog.id);
+    setBlogs(updatedBlogs)
+  }
+
   if(user === null) {
     return (
       <div>
@@ -151,7 +160,7 @@ const App = () => {
       </Togglable>
       {
         blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} handleClick={() => handleClickLike(blog)}/>)
+        <Blog key={blog.id} blog={blog} handleClickLike={() => handleClickLike(blog)} handleClickRemove={() => handleClickRemove(blog)} showDelete={blog.user.username === user.username}/>)
       }
     </div>
   )
