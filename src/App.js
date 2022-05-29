@@ -5,6 +5,7 @@ import loginService from './services/login'
 import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
 import Notification from './components/Notification'
+import { compareLikes } from './util'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -84,6 +85,21 @@ const App = () => {
     }
   }
 
+  const handleClickLike = async (blog) => {
+    const updatedBlog = await blogService.update({
+      ...blog,
+      likes: blog.likes + 1
+    })
+    const newBlogs = blogs.map(blog => {
+      if(blog.id === updatedBlog.id) {
+        return updatedBlog
+      }
+      return blog
+    })
+    newBlogs.sort(compareLikes)
+    setBlogs(newBlogs)
+  }
+
   if(user === null) {
     return (
       <div>
@@ -135,7 +151,7 @@ const App = () => {
       </Togglable>
       {
         blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />)
+        <Blog key={blog.id} blog={blog} handleClick={() => handleClickLike(blog)}/>)
       }
     </div>
   )

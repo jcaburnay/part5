@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { compareLikes } from '../util'
 const baseUrl = '/api/blogs'
 
 let token = null
@@ -12,7 +13,9 @@ const getAll = async () => {
     headers: { 'Authorization': token },
   }
   const response = await axios.get(baseUrl, config)
-  return response.data
+  const blogs = response.data
+  blogs.sort(compareLikes)
+  return blogs
 }
 
 const create = async newObject => {

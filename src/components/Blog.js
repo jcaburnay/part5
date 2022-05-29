@@ -1,7 +1,6 @@
 import { useState } from 'react'
-import blogService from '../services/blogs'
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, handleClick }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -11,7 +10,6 @@ const Blog = ({ blog }) => {
   }
   const [visible, setVisible] = useState(false)
   const [buttonLabel, setButtonLabel] = useState('view')
-  const [likes, setLikes] = useState(blog.likes)
 
   const showWhenVisible = { display: visible ? '' : 'none' }
 
@@ -20,13 +18,6 @@ const Blog = ({ blog }) => {
     buttonLabel === 'view' ? setButtonLabel('hide') : setButtonLabel('view')
   }
   
-  const handleClick = async () => {
-    const updatedBlog = await blogService.update({
-      ...blog,
-      likes: likes + 1
-    })
-    setLikes(updatedBlog.likes)
-  }
 
   return (
     <div style={blogStyle}>
@@ -35,7 +26,7 @@ const Blog = ({ blog }) => {
       <div style={showWhenVisible}>
         <p>Author: {blog.author}</p>
         <p>Blog Url: {blog.url}</p>
-        <p>likes: {likes} <button onClick={handleClick}>like</button></p>
+        <p>likes: {blog.likes} <button onClick={handleClick}>like</button></p>
       </div>
     </div>  
   )
