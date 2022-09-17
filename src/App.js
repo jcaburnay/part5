@@ -1,25 +1,25 @@
-import { useState, useEffect } from 'react'
-import Blog from './components/Blog'
-import blogService from './services/blogs'
-import loginService from './services/login'
-import BlogForm from './components/BlogForm'
-import Togglable from './components/Togglable'
-import Notification from './components/Notification'
-import { compareLikes } from './util'
+import { useState, useEffect } from "react"
+import Blog from "./components/Blog"
+import blogService from "./services/blogs"
+import loginService from "./services/login"
+import BlogForm from "./components/BlogForm"
+import Togglable from "./components/Togglable"
+import Notification from "./components/Notification"
+import { compareLikes } from "./util"
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [username, setUsername] = useState('') 
-  const [password, setPassword] = useState('')
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
   const [user, setUser] = useState(null)
-  const [blogTitle, setBlogTitle] = useState('')
-  const [blogAuthor, setBlogAuthor] = useState('')
-  const [blogUrl, setBlogUrl] = useState('')
-  const [successMessage, setSuccessMessage] = useState(null);
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [blogTitle, setBlogTitle] = useState("")
+  const [blogAuthor, setBlogAuthor] = useState("")
+  const [blogUrl, setBlogUrl] = useState("")
+  const [successMessage, setSuccessMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
-    const loggedInUserJSON = window.localStorage.getItem('loggedInUser')
+    const loggedInUserJSON = window.localStorage.getItem("loggedInUser")
     if (loggedInUserJSON) {
       const user = JSON.parse(loggedInUserJSON)
       setUser(user)
@@ -34,7 +34,7 @@ const App = () => {
 
   const handleLogin = async event => {
     event.preventDefault()
-    console.log('login info', username, password)
+    console.log("login info", username, password)
     try {
       const user = await loginService.login({
         username, password
@@ -42,17 +42,17 @@ const App = () => {
       blogService.setToken(user.token)
       setUser(user)
       window.localStorage.setItem(
-        'loggedInUser', JSON.stringify(user)
-      ) 
+        "loggedInUser", JSON.stringify(user)
+      )
       const blogs = await blogService.getAll()
       setBlogs(blogs)
-      setUsername('')
-      setPassword('')
+      setUsername("")
+      setPassword("")
     } catch(error) {
-      setErrorMessage('Invalid username or password');
+      setErrorMessage("Invalid username or password")
       setTimeout(() => {
         setErrorMessage(null)
-      }, 5000);
+      }, 5000)
       console.log(error)
     }
   }
@@ -69,12 +69,12 @@ const App = () => {
       author: blogAuthor,
       url: blogUrl
     }
-    console.log('new blog info', blogDetails)
+    console.log("new blog info", blogDetails)
     try {
       const blog = await blogService.create(blogDetails)
-      setBlogTitle('')
-      setBlogAuthor('')
-      setBlogUrl('')
+      setBlogTitle("")
+      setBlogAuthor("")
+      setBlogUrl("")
       setSuccessMessage(`new blog added: ${blog.title} by ${blog.author}`)
       setTimeout(() => {
         setSuccessMessage(null)
@@ -102,10 +102,10 @@ const App = () => {
 
   const handleClickRemove = async (blogToRemove) => {
     if (!window.confirm("Do you really want to remove?")) {
-      return;
+      return
     }
     await blogService.deleteBlog(blogToRemove)
-    const updatedBlogs = blogs.filter(blog => blogToRemove.id !== blog.id);
+    const updatedBlogs = blogs.filter(blog => blogToRemove.id !== blog.id)
     setBlogs(updatedBlogs)
   }
 
@@ -147,7 +147,7 @@ const App = () => {
         <button onClick={handleLogout}>logout</button>
       </div>
       <Togglable buttonLabel='new blog'>
-        <BlogForm 
+        <BlogForm
           successMessage={successMessage}
           blogTitle={blogTitle}
           blogAuthor={blogAuthor}
@@ -160,7 +160,7 @@ const App = () => {
       </Togglable>
       {
         blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} handleClickLike={() => handleClickLike(blog)} handleClickRemove={() => handleClickRemove(blog)} showDelete={blog.user.username === user.username}/>)
+          <Blog key={blog.id} blog={blog} handleClickLike={() => handleClickLike(blog)} handleClickRemove={() => handleClickRemove(blog)} showDelete={blog.user.username === user.username}/>)
       }
     </div>
   )

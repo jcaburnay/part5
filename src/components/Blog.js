@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types'
-import { useState } from "react";
+import PropTypes from "prop-types"
+import { useState } from "react"
 
 const Blog = ({ blog, handleClickLike, handleClickRemove, showDelete }) => {
   const blogStyle = {
@@ -8,16 +8,16 @@ const Blog = ({ blog, handleClickLike, handleClickRemove, showDelete }) => {
     border: "solid",
     borderWidth: 1,
     marginBottom: 5,
-  };
-  const [visible, setVisible] = useState(false);
-  const [buttonLabel, setButtonLabel] = useState("view");
+  }
+  const [visible, setVisible] = useState(false)
+  const [buttonLabel, setButtonLabel] = useState("view")
 
-  const showWhenVisible = { display: visible ? "" : "none" };
+  const showWhenVisible = { display: visible ? "" : "none" }
 
   const toggleVisibility = () => {
-    setVisible(!visible);
-    buttonLabel === "view" ? setButtonLabel("hide") : setButtonLabel("view");
-  };
+    setVisible(!visible)
+    buttonLabel === "view" ? setButtonLabel("hide") : setButtonLabel("view")
+  }
 
   return (
     <div style={blogStyle}>
@@ -36,14 +36,14 @@ const Blog = ({ blog, handleClickLike, handleClickRemove, showDelete }) => {
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
 Blog.propTypes = {
-  blog: PropTypes.object.isRequired, 
-  handleClickLike: PropTypes.func.isRequired, 
-  handleClickRemove: PropTypes.func.isRequired, 
+  blog: PropTypes.object.isRequired,
+  handleClickLike: PropTypes.func.isRequired,
+  handleClickRemove: PropTypes.func.isRequired,
   showDelete: PropTypes.bool.isRequired
 }
 
-export default Blog;
+export default Blog

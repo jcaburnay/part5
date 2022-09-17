@@ -1,6 +1,6 @@
-import axios from 'axios'
-import { compareLikes } from '../util'
-const baseUrl = '/api/blogs'
+import axios from "axios"
+import { compareLikes } from "../util"
+const baseUrl = "/api/blogs"
 
 let token = null
 
@@ -10,7 +10,7 @@ const setToken = newToken => {
 
 const getAll = async () => {
   const config = {
-    headers: { 'Authorization': token },
+    headers: { "Authorization": token },
   }
   const response = await axios.get(baseUrl, config)
   const blogs = response.data
@@ -20,7 +20,7 @@ const getAll = async () => {
 
 const create = async newObject => {
   const config = {
-    headers: { 'Authorization': token },
+    headers: { "Authorization": token },
   }
   const response = await axios.post(baseUrl, newObject, config)
   return response.data
@@ -28,7 +28,7 @@ const create = async newObject => {
 
 const update = async (blog) => {
   const config = {
-    headers: { 'Authorization': token },
+    headers: { "Authorization": token },
   }
   const response = await axios.put(`${baseUrl}/${blog.id}`, blog, config)
   return response.data
@@ -36,7 +36,7 @@ const update = async (blog) => {
 
 const deleteBlog = async (blog) => {
   const config = {
-    headers: { 'Authorization': token },
+    headers: { "Authorization": token },
   }
   const response = await axios.delete(`${baseUrl}/${blog.id}`, config)
   return response.data
