@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import Notification from './Notification'
 
 const BlogForm = ({
@@ -48,6 +49,17 @@ const BlogForm = ({
         </form>
     </div>
     )
+}
+
+BlogForm.propTypes = {
+    successMessage: PropTypes.string,
+    blogTitle: PropTypes.string.isRequired,
+    blogAuthor: PropTypes.string.isRequired,
+    blogUrl: PropTypes.string.isRequired,
+    handleCreate: PropTypes.func.isRequired,
+    handleTitleChange: PropTypes.func.isRequired,
+    handleAuthorChange: PropTypes.func.isRequired,
+    handleUrlChange: PropTypes.func.isRequired,
 }
 
 export default BlogForm
